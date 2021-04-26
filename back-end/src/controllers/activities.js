@@ -10,8 +10,20 @@ const getActivities = async (req, res) => {
 const getActivitiesByUser = async (req, res) => {
     const { userId } = req.body;
     if (!userId) return res.status(STATUS_CODES.BAD_REQUEST).json(defaultResponses.BadRequest);
-    const data = await utils.getItemsWithPagination(models.Activity, req.body, { userId });
-    return res.status(data.statusCode).json(data);
+    let orderKey = req.body['order'] || model.primaryKeyAttributes[0];
+
+    try {
+        const items = await models.Activity.findAll({
+            where: { userId },
+            order: [[orderKey, 'DESC']]
+
+        })
+        return res.status(STATUS_CODES.OK).json({ ...defaultResponses.Success, data: { items } });
+    } catch (error) {
+        console.log(error)
+        return res.status(STATUS_CODES.SERVER_ERROR).json(defaultResponses.DbError)
+
+    }
 };
 
 module.exports = {
