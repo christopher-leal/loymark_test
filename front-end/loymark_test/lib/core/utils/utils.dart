@@ -21,6 +21,16 @@ class Utils {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => page), (route) => false);
   }
 
+  static String formatDateWithoutTime({String string, DateTime datetime}) {
+    if (string != null) {
+      final dt0 = DateTime.parse(string);
+      return DateFormat('d MMM y', 'es_MX').format(dt0);
+    } else if (datetime != null) {
+      return DateFormat('d MMM y', 'es_MX').format(datetime);
+    }
+    return '';
+  }
+
   static String formatDate({String string, DateTime datetime}) {
     if (string != null) {
       final dt0 = DateTime.parse(string);
