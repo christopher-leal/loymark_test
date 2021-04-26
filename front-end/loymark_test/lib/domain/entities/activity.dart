@@ -17,7 +17,7 @@ class Activity {
         userId: json['userId'] as int,
         activity: json['activity'] as String,
         createDate: json['createDate'] != null ? DateTime.parse(json['createDate'] as String) : null,
-        user: User.fromJson(json['user'] as Map<String, dynamic>),
+        user: json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null,
       );
 
   final int id;
