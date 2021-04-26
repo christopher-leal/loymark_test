@@ -90,8 +90,8 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 if (index < state.activities.length) {
-                  final user = state.activities[index];
-                  return _buildListItem(context, user);
+                  final activity = state.activities[index];
+                  return _buildListItem(context, activity);
                 } else if (context.read<ActivitiesCubit>().isAllData) {
                   return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
