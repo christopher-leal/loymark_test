@@ -15,7 +15,7 @@ const searchUser = async (req, res) => {
     const term = `%${find}%`
     try {
 
-        const data = await models.User.findAll({
+        const items = await models.User.findAll({
             where: {
                 [Op.or]: [
                     { email: { [Op.like]: term } },
@@ -25,7 +25,7 @@ const searchUser = async (req, res) => {
                 ]
             }
         })
-        return res.status(STATUS_CODES.OK).json({ ...defaultResponses.Success, data });
+        return res.status(STATUS_CODES.OK).json({ ...defaultResponses.Success, data: { items } });
     } catch (error) {
         return res.status(STATUS_CODES.SERVER_ERROR).json(defaultResponses.DbError)
 
