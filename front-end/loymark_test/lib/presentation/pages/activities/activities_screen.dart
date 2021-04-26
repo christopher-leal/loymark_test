@@ -34,25 +34,6 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
     super.dispose();
   }
 
-  Future<bool> _dismissConfirm(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirmar'),
-          content: const Text('¿Deseas eliminar este usuario?'),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancelar'),
-            ),
-            FlatButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Borrar')),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildListItem(BuildContext context, Activity activity) {
     return ListTile(
       title: Wrap(
