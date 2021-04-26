@@ -10,7 +10,7 @@ class GetUsersUseCase {
     return await _repository.getUsers(offset);
   }
 
-  Future<ApiListResponse<User>> searchUsers(String find) async {
+  Future<List<User>> searchUsers(String find) async {
     return await _repository.searchUsers(find);
   }
 }
