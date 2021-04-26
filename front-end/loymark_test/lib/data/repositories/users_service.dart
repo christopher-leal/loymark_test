@@ -4,7 +4,7 @@ import 'package:loymark_test/domain/entities/api_response.dart';
 import 'package:loymark_test/domain/entities/user.dart';
 import 'package:loymark_test/domain/repositories/users_repository.dart';
 
-class UserService extends UsersRepository {
+class UsersService extends UsersRepository {
   @override
   Future<ApiListResponse<User>> getUsers(int offset, {int attempts = 0}) async {
     try {
@@ -45,9 +45,18 @@ class UserService extends UsersRepository {
   }
 
   @override
-  Future<bool> upsertUser() async {
-    // TODO: implement upsertUser
-    throw UnimplementedError();
+  Future<bool> upsertUser(User user, {int attempts = 0}) async {
+    try {
+      final response = await dio.post('/user/upsertUser', data: user.toJson());
+      if (response.statusCode == 200) {
+        final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
+        return apiResponse.success;
+      }
+    } catch (e) {
+      print('$e upsertUser $attempts');
+      if (attempts < 3) return await upsertUser(user, attempts: attempts + 1);
+    }
+    return false;
   }
 
   @override
