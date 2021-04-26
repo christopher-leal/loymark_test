@@ -46,13 +46,17 @@ const upsertUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const { id } = req.body;
-        const deletedUser = await User.findByPk(id);
+        const { id } = req.params;
+        const deletedUser = await models.User.findByPk(id);
         if (!deletedUser) return res.status(STATUS_CODES.NOT_FOUND).json(defaultResponses.NotFound);
         deletedUser.status = false;
         await deletedUser.save();
+        const activity = { userId: deletedUser['id'], activity: 'User deleted' }
+        await models.Activity.create(activity)
+
         return res.status(STATUS_CODES.OK).json(defaultResponses.Success)
     } catch (error) {
+        console.log(error)
         return res.status(STATUS_CODES.SERVER_ERROR).json(defaultResponses.DbError)
     }
 };
