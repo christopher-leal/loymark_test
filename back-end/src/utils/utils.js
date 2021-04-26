@@ -1,4 +1,4 @@
-const defaultResponses = require('./defaultResponses');
+const { defaultResponses } = require('./defaultResponses');
 
 const getItemsWithPagination = async (model, query, where = {}) => {
     let limit = 20;

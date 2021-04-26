@@ -8,7 +8,7 @@ const STATUS_CODES = {
     DUPLICATED: 409,
     SERVER_ERROR: 500,
 }
-module.exports = {
+const defaultResponses = {
     Success: {
         success: true,
         statusCode: STATUS_CODES.OK
@@ -36,3 +36,5 @@ module.exports = {
 
 
 }
+
+module.exports = { defaultResponses, STATUS_CODES }
