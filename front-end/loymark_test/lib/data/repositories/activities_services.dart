@@ -26,22 +26,21 @@ class ActivitiesService extends ActivitiesRepository {
   }
 
   @override
-  Future<ApiListResponse<Activity>> getActivitiesByUser(int userId, int offset, {int attempts = 0}) async {
+  Future<List<Activity>> getActivitiesByUser(int userId, int offset, {int attempts = 0}) async {
     try {
       final response = await dio.post('/activity/getActivitiesByUser', data: {'offset': offset, 'userId': userId, 'order': 'createDate'});
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
         if (apiResponse.success) {
-          final totalItems = apiResponse.data['totalItems'] as int;
           final items = apiResponse.data['items'] as Iterable;
           final users = items.map((item) => Activity.fromJson(item as Map<String, dynamic>)).toList();
-          return ApiListResponse(items: users, totalItems: totalItems);
+          return users;
         }
       }
     } catch (e) {
       print('$e getActivitiesByUser $attempts');
       if (attempts < 3) return await getActivitiesByUser(userId, offset, attempts: attempts + 1);
     }
-    return ApiListResponse(items: [], totalItems: 0);
+    return [];
   }
 }

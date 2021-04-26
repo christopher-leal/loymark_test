@@ -3,5 +3,5 @@ import 'package:loymark_test/domain/entities/activity.dart';
 
 abstract class ActivitiesRepository {
   Future<ApiListResponse<Activity>> getActivities(int offset);
-  Future<ApiListResponse<Activity>> getActivitiesByUser(int user, int offset);
+  Future<List<Activity>> getActivitiesByUser(int user, int offset);
 }
