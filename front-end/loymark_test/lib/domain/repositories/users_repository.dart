@@ -4,6 +4,6 @@ import 'package:loymark_test/domain/entities/user.dart';
 abstract class UsersRepository {
   Future<ApiListResponse<User>> getUsers(int offset);
   Future<List<User>> searchUsers(String find);
-  Future<bool> upsertUser();
+  Future<bool> upsertUser(User user);
   Future<bool> deleteUser(int id);
 }
