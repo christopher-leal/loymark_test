@@ -8,7 +8,7 @@ class ActivitiesService extends ActivitiesRepository {
   @override
   Future<ApiListResponse<Activity>> getActivities(int offset, {int attempts = 0}) async {
     try {
-      final response = await dio.post('/activity/getActivities', data: {'offset': offset});
+      final response = await dio.post('/activity/getActivities', data: {'offset': offset, 'order': 'createDate'});
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
         if (apiResponse.success) {
@@ -28,7 +28,7 @@ class ActivitiesService extends ActivitiesRepository {
   @override
   Future<ApiListResponse<Activity>> getActivitiesByUser(int userId, int offset, {int attempts = 0}) async {
     try {
-      final response = await dio.post('/activity/getActivitiesByUser', data: {'offset': offset, 'userId': userId});
+      final response = await dio.post('/activity/getActivitiesByUser', data: {'offset': offset, 'userId': userId, 'order': 'createDate'});
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
         if (apiResponse.success) {
