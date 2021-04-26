@@ -11,11 +11,12 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USERNAME, p
         acquire: 10000,
         idle: 10000
     },
-
     dialectOptions: {
-        timezone: '-05:00',
+        dateStrings: true,
+        typeCast: true
     },
-    timezone: '-05:00',
+    timezone: "America/Mexico_City",
+
 })
 
 module.exports = {
