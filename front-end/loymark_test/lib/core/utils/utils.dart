@@ -24,9 +24,9 @@ class Utils {
   static String formatDate({String string, DateTime datetime}) {
     if (string != null) {
       final dt0 = DateTime.parse(string);
-      return DateFormat.yMMMMd('es_MX').format(dt0);
+      return DateFormat.yMMMMEEEEd('es_MX').add_jms().format(dt0);
     } else if (datetime != null) {
-      return DateFormat.yMMMMd('es_MX').format(datetime);
+      return DateFormat.yMMMMEEEEd('es_MX').add_jms().format(datetime);
     }
     return '';
   }
