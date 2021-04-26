@@ -53,4 +53,8 @@ class User {
         'receiveInfo': receiveInfo,
         'status': status,
       };
+
+  String get fullName {
+    return '$name $lastName';
+  }
 }
