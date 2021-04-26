@@ -23,4 +23,10 @@ class ActivitiesCubit extends Cubit<ActivitiesState> {
     emit(ActivitiesState([...state.activities, ...data.items]));
     offset += 20;
   }
+
+  Future<void> getActivitiesByUser(int userId) async {
+    emit(ActivitiesState([], isLoading: true));
+    final activities = await _getActivitiesUseCase.getActivitiesByUser(userId, offset);
+    emit(ActivitiesState(activities));
+  }
 }
