@@ -1,6 +1,15 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || port;
+require('dotenv').config();
+
+
+app.use(require('cors')())
+app.use(express.json())
+
+const port = process.env.PORT || 3000;
+
+app.use('/user', require('./src/routes/users'));
+
 app.get('/', (req, res) => {
     res.status(200).json({ success: true, status: 200 })
 });
