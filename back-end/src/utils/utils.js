@@ -1,6 +1,6 @@
 const { defaultResponses } = require('./defaultResponses');
 
-const getItemsWithPagination = async (model, query, where = {}) => {
+const getItemsWithPagination = async (model, query, where = {}, include = '') => {
     let limit = 20;
     let offset = 0;
     if (query['limit']) limit = Number(query['limit']);
@@ -11,7 +11,7 @@ const getItemsWithPagination = async (model, query, where = {}) => {
             where,
             limit,
             offset,
-            raw: true,
+            include,
             order: [[orderKey, 'DESC']]
         });
         return {
