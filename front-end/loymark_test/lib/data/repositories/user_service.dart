@@ -6,7 +6,7 @@ import 'package:loymark_test/domain/repositories/users_repository.dart';
 
 class UserService extends UsersRepository {
   @override
-  Future<ApiListResponse<User>> getUsers(int offset) async {
+  Future<ApiListResponse<User>> getUsers(int offset, {int attempts = 0}) async {
     try {
       final response = await dio.post('/user/getUsers', data: {'offset': offset});
       if (response.statusCode == 200) {
@@ -19,15 +19,29 @@ class UserService extends UsersRepository {
         }
       }
     } catch (e) {
-      print(e);
+      print('$e getUsers $attempts');
+      if (attempts < 3) return await getUsers(offset, attempts: attempts + 1);
     }
     return ApiListResponse(items: [], totalItems: 0);
   }
 
   @override
-  Future<ApiListResponse<User>> searchUsers(String find) async {
-    // TODO: implement searchUsers
-    throw UnimplementedError();
+  Future<List<User>> searchUsers(String find, {int attempts = 0}) async {
+    try {
+      final response = await dio.post('/user/searchUser', data: {'find': find});
+      if (response.statusCode == 200) {
+        final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
+        if (apiResponse.success) {
+          final items = apiResponse.data['items'] as Iterable;
+          final users = items.map((item) => User.fromJson(item as Map<String, dynamic>)).toList();
+          return users;
+        }
+      }
+    } catch (e) {
+      print('$e searchUsers $attempts');
+      if (attempts < 3) return await searchUsers(find, attempts: attempts + 1);
+    }
+    return [];
   }
 
   @override
@@ -37,8 +51,17 @@ class UserService extends UsersRepository {
   }
 
   @override
-  Future<bool> deleteUser(int id) async {
-    // TODO: implement deleteUser
-    throw UnimplementedError();
+  Future<bool> deleteUser(int id, {int attempts = 0}) async {
+    try {
+      final response = await dio.get('/user/delete/$id');
+      if (response.statusCode == 200) {
+        final apiResponse = ApiResponse.fromJson(response.data as Map<String, dynamic>);
+        return apiResponse.success;
+      }
+    } catch (e) {
+      print('$e deleteUser $attempts');
+      if (attempts < 3) return await deleteUser(id, attempts: attempts + 1);
+    }
+    return false;
   }
 }
