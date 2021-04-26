@@ -5,6 +5,8 @@ const router = Router();
 
 router.post('/upsertUser', UserController.upsertUser);
 
+router.post('/searchUser', UserController.searchUser);
+
 router.post('/getUsers', UserController.getUsers);
 
 router.get('/delete/:id', UserController.deleteUser);

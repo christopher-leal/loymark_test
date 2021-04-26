@@ -1,11 +1,35 @@
 const models = require('./../config/db').models();
 const { STATUS_CODES, defaultResponses } = require('../utils/defaultResponses');
 const utils = require('./../utils/utils');
+const { Op } = require("sequelize");
 
 
 const getUsers = async (req, res) => {
     const data = await utils.getItemsWithPagination(models.User, req.body, { status: true })
     return res.status(data.statusCode).json(data);
+};
+
+const searchUser = async (req, res) => {
+    const { find } = req.body
+    if (!find) return res.status(STATUS_CODES.BAD_REQUEST).json(defaultResponses.BadRequest)
+    const term = `%${find}%`
+    try {
+
+        const data = await models.User.findAll({
+            where: {
+                [Op.or]: [
+                    { email: { [Op.like]: term } },
+                    { name: { [Op.like]: term } },
+                    { lastName: { [Op.like]: term } },
+                    { country: { [Op.like]: term } },
+                ]
+            }
+        })
+        return res.status(STATUS_CODES.OK).json({ ...defaultResponses.Success, data });
+    } catch (error) {
+        return res.status(STATUS_CODES.SERVER_ERROR).json(defaultResponses.DbError)
+
+    }
 };
 
 const upsertUser = async (req, res) => {
@@ -63,6 +87,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    searchUser,
     upsertUser,
     deleteUser
 };
