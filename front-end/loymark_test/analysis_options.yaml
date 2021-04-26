@@ -1,0 +1,20 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+
+    # Make constructors the first thing in every class
+    sort_constructors_first: true
+
+    # The new tabs vs. spaces. Choose wisely
+    prefer_single_quotes: true
+    
+    # Blindly follow the Flutter code style, which prefers types everywhere
+    always_specify_types: false
+
+    avoid_print: false
+
+    avoid_bool_literals_in_conditional_expressions: false
+
+    unnecessary_await_in_return: false
+  
