@@ -10,7 +10,7 @@ class GetActivitiesUseCase {
     return await _repository.getActivities(offset);
   }
 
-  Future<ApiListResponse<Activity>> getActivitiesByUser(int userId, int offset) async {
+  Future<List<Activity>> getActivitiesByUser(int userId, int offset) async {
     return await _repository.getActivitiesByUser(userId, offset);
   }
 }
