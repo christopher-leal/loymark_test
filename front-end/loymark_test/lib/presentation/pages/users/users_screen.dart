@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loymark_test/core/utils/utils.dart';
+import 'package:loymark_test/domain/entities/user.dart';
 import 'package:loymark_test/presentation/pages/users/user_history_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/user_screen.dart';
 import 'package:loymark_test/presentation/pages/users/users_cubit.dart';
@@ -55,6 +56,36 @@ class _UsersScreenState extends State<UsersScreen> {
     );
   }
 
+  Widget _buildListItem(BuildContext context, User user) {
+    return Dismissible(
+      key: ValueKey(user.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      onDismissed: (direction) {
+        context.read<UsersCubit>().deleteUser(user.id);
+      },
+      confirmDismiss: (DismissDirection direction) async {
+        return await _dismissConfirm(context);
+      },
+      child: UserListItem(
+        user: user,
+        onTap: () {
+          Utils.navigateTo(context, UserScreen(user: user));
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -84,46 +115,21 @@ class _UsersScreenState extends State<UsersScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {},
           child: const Icon(Icons.add),
         ),
         body: BlocBuilder<UsersCubit, UsersState>(
           builder: (context, state) {
             if (state.users.isEmpty && state.isLoading) return const Center(child: CircularProgressIndicator());
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context, index) => const Divider(thickness: 2.0),
               physics: const BouncingScrollPhysics(),
               itemCount: state.users.length + 1,
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 if (index < state.users.length) {
                   final user = state.users[index];
-                  return Dismissible(
-                    key: ValueKey(user.id),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      context.read<UsersCubit>().deleteUser(user.id);
-                    },
-                    confirmDismiss: (DismissDirection direction) async {
-                      return await _dismissConfirm(context);
-                    },
-                    child: UserListItem(
-                      user: user,
-                      onTap: () {
-                        Utils.navigateTo(context, UserScreen(user: user));
-                      },
-                    ),
-                  );
+                  return _buildListItem(context, user);
                 } else if (context.read<UsersCubit>().isAllData) {
                   return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
