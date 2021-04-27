@@ -36,23 +36,24 @@ class UpsertUserScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => UpsertUserCubit(context.read())..init(user),
       child: Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(user != null ? 'Nuevo usuario' : 'Editar usuario'),
-          ),
-          floatingActionButton: Builder(
-            builder: (context) {
-              return FloatingActionButton(
-                onPressed: () {
-                  Utils.dismissKeyboard(context);
-                  context.read<UpsertUserCubit>().upsertUser();
-                },
-                child: const Icon(Icons.save),
-              );
-            },
-          ),
-          body: BlocConsumer<UpsertUserCubit, UpsertUserState>(listener: (context, state) {
+        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(user == null ? 'Nuevo usuario' : 'Editar usuario'),
+        ),
+        floatingActionButton: Builder(
+          builder: (context) {
+            return FloatingActionButton(
+              onPressed: () {
+                Utils.dismissKeyboard(context);
+                context.read<UpsertUserCubit>().upsertUser();
+              },
+              child: const Icon(Icons.save),
+            );
+          },
+        ),
+        body: BlocConsumer<UpsertUserCubit, UpsertUserState>(
+          listener: (context, state) {
             if (state.error != null) {
               Utils.showSnackBar(_scaffoldKey, context, state.error);
               return;
@@ -64,7 +65,8 @@ class UpsertUserScreen extends StatelessWidget {
               acivitiesCubit.getActivities(refreshList: true);
               return Navigator.of(context).pop(true);
             }
-          }, builder: (context, state) {
+          },
+          builder: (context, state) {
             if (state.isLoading) return const Center(child: CircularProgressIndicator());
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -78,6 +80,7 @@ class UpsertUserScreen extends StatelessWidget {
                         labelText: 'Nombre',
                         hintText: 'Ingresa tu nombre',
                       ),
+                      keyboardType: TextInputType.name,
                     ),
                     TextField(
                       controller: context.read<UpsertUserCubit>().lastNameController,
@@ -85,6 +88,7 @@ class UpsertUserScreen extends StatelessWidget {
                         labelText: 'Apellido',
                         hintText: 'Ingresa tu apellido',
                       ),
+                      keyboardType: TextInputType.name,
                     ),
                     TextField(
                       controller: context.read<UpsertUserCubit>().emailController,
@@ -92,6 +96,7 @@ class UpsertUserScreen extends StatelessWidget {
                         labelText: 'Email',
                         hintText: 'Ingresa tu email',
                       ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     TextField(
                       controller: context.read<UpsertUserCubit>().birthdayController,
@@ -99,6 +104,7 @@ class UpsertUserScreen extends StatelessWidget {
                         labelText: 'Fecha de nacimiento',
                         hintText: 'Ingresa tu fecha de nacimiento',
                       ),
+                      keyboardType: TextInputType.datetime,
                       onTap: () {
                         Utils.dismissKeyboard(context);
                         DatePicker.showDatePicker(
@@ -120,6 +126,7 @@ class UpsertUserScreen extends StatelessWidget {
                         labelText: 'Teléfono',
                         hintText: 'Ingresa tu teléfono',
                       ),
+                      keyboardType: TextInputType.phone,
                     ),
                     DropdownButton<String>(
                       value: state.selectedCountry,
@@ -142,7 +149,9 @@ class UpsertUserScreen extends StatelessWidget {
                 ),
               ),
             );
-          })),
+          },
+        ),
+      ),
     );
   }
 }
