@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:loymark_test/core/utils/utils.dart';
 import 'package:loymark_test/domain/entities/user.dart';
+import 'package:loymark_test/presentation/pages/activities/activities_cubit.dart';
 import 'package:loymark_test/presentation/pages/home/countries_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/upsert_user_cubit.dart';
+import 'package:loymark_test/presentation/pages/users/users_cubit.dart';
 
 class UpsertUserScreen extends StatelessWidget {
   UpsertUserScreen({Key key, this.user}) : super(key: key);
@@ -56,11 +58,13 @@ class UpsertUserScreen extends StatelessWidget {
               return;
             }
             if (state.isSuccess) {
-              Navigator.pop(context, true);
-              return;
+              final usersCubit = context.read<UsersCubit>();
+              final acivitiesCubit = context.read<ActivitiesCubit>();
+              usersCubit.getUsers(refreshList: true);
+              acivitiesCubit.getActivities(refreshList: true);
+              return Navigator.of(context).pop(true);
             }
           }, builder: (context, state) {
-            // final cubit = BlocProvider.of<UpsertUserCubit>(context);
             if (state.isLoading) return const Center(child: CircularProgressIndicator());
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
