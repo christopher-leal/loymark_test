@@ -90,7 +90,9 @@ class UpsertUserCubit extends Cubit<UpsertUserState> {
       return emit(UpsertUserState(null, isSuccess: true));
     }
     emit(UpsertUserState(state.user,
-        error: 'Ha ocurrido un error', receiveNotification: state.receiveNotification, selectedCountry: state.selectedCountry));
+        error: 'Ha ocurrido un error, necesitas modificar al menos un campo',
+        receiveNotification: state.receiveNotification,
+        selectedCountry: state.selectedCountry));
   }
 
   void changeReceiveNotification() =>
