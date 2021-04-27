@@ -26,8 +26,9 @@ class UpsertUserCubit extends Cubit<UpsertUserState> {
   final countryController = TextEditingController();
   DateTime birthday;
 
-  RegExp emailRegex = RegExp(
+  final emailRegex = RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  final numberRegex = RegExp(r'^(?:[+0]9)?[0-9]{10}$');
 
   Future<void> upsertUser() async {
     if (nameController.text.trim().isEmpty) {
@@ -58,6 +59,12 @@ class UpsertUserCubit extends Cubit<UpsertUserState> {
       print('birthdayController vacio');
       emit(UpsertUserState(state.user,
           error: 'El fecha de nacimiento es requerida', receiveNotification: state.receiveNotification, selectedCountry: state.selectedCountry));
+      return;
+    }
+    if (phoneController.text.trim().isNotEmpty && !numberRegex.hasMatch(phoneController.text)) {
+      print('phoneController invalid');
+      emit(UpsertUserState(state.user,
+          error: 'El numero de teléfono no es valido', receiveNotification: state.receiveNotification, selectedCountry: state.selectedCountry));
       return;
     }
     if (state.selectedCountry.isEmpty) {
