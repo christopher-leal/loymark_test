@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loymark_test/presentation/pages/activities/activities_cubit.dart';
 import 'package:loymark_test/presentation/pages/activities/activities_screen.dart';
 import 'package:loymark_test/presentation/pages/home/home_cubit.dart';
-import 'package:loymark_test/presentation/pages/users/users_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/users_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,8 +10,6 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HomeCubit()),
-        BlocProvider(create: (context) => UsersCubit(context.read(), context.read())),
-        BlocProvider(create: (context) => ActivitiesCubit(context.read())),
       ],
       child: Scaffold(
           bottomNavigationBar: _BuildBottomBar(),
