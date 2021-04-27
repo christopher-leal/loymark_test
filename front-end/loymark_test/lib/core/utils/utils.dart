@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
-  static void showSnackbar(GlobalKey<ScaffoldState> scaffoldKey, String text) {
+  static void showSnackBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context, String text) {
     final snackbar = SnackBar(content: Text(text));
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
@@ -39,6 +39,12 @@ class Utils {
       return DateFormat.yMMMMEEEEd('es_MX').add_jms().format(datetime);
     }
     return '';
+  }
+
+  static String dateWithoutTime(DateTime date) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(date);
+    return formatted;
   }
 
   static void dismissKeyboard(BuildContext context) {
