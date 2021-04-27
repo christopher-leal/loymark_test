@@ -51,7 +51,6 @@ class User {
         'phone': phone,
         'country': country,
         'receiveInfo': receiveInfo,
-        'status': status,
       };
 
   String get fullName {
