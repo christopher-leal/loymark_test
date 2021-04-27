@@ -82,7 +82,8 @@ class UpsertUserCubit extends Cubit<UpsertUserState> {
     if (success) {
       return emit(UpsertUserState(null, isSuccess: true));
     }
-    emit(UpsertUserState(state.user, receiveNotification: state.receiveNotification, selectedCountry: state.selectedCountry));
+    emit(UpsertUserState(state.user,
+        error: 'Ha ocurrido un error', receiveNotification: state.receiveNotification, selectedCountry: state.selectedCountry));
   }
 
   void changeReceiveNotification() =>
@@ -99,7 +100,7 @@ class UpsertUserCubit extends Cubit<UpsertUserState> {
       birthdayController.text = Utils.formatDateWithoutTime(datetime: user.birthday);
       phoneController.text = user.phone;
       countryController.text = user.country;
-      emit(UpsertUserState(user, receiveNotification: user.receiveInfo));
+      emit(UpsertUserState(user, receiveNotification: user.receiveInfo, selectedCountry: user.country));
     }
   }
 }
