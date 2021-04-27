@@ -16,8 +16,13 @@ class ActivitiesCubit extends Cubit<ActivitiesState> {
 
   bool get isAllData => totalItems == state.activities.length;
 
-  Future<void> getActivities() async {
-    emit(ActivitiesState([...state.activities], isLoading: true));
+  Future<void> getActivities({bool refreshList = false}) async {
+    if (refreshList) {
+      offset = 0;
+      emit(ActivitiesState([], isLoading: true));
+    } else {
+      emit(ActivitiesState([...state.activities], isLoading: true));
+    }
     final data = await _getActivitiesUseCase.getActivities(offset);
     totalItems = data.totalItems;
     emit(ActivitiesState([...state.activities, ...data.items]));

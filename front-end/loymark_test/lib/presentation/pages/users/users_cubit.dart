@@ -18,8 +18,13 @@ class UsersCubit extends Cubit<UsersState> {
 
   bool get isAllData => totalItems == state.users.length;
 
-  Future<void> getUsers() async {
-    emit(UsersState([...state.users], isLoading: true));
+  Future<void> getUsers({bool refreshList = false}) async {
+    if (refreshList) {
+      offset = 0;
+      emit(UsersState([], isLoading: true));
+    } else {
+      emit(UsersState([...state.users], isLoading: true));
+    }
     final data = await _getUsersUseCase.getUsers(offset);
     totalItems = data.totalItems;
     emit(UsersState([...state.users, ...data.items]));
