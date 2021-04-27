@@ -49,10 +49,13 @@ class UserScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {
-                Utils.navigateTo(context, UpsertUserScreen(user: user));
+              onPressed: () async {
+                final success = await Utils.navigateTo(context, UpsertUserScreen(user: user)) as bool;
+                if (success != null) {
+                  Navigator.of(context).pop();
+                }
               },
-            )
+            ),
           ],
         ),
         body: SafeArea(
