@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loymark_test/core/utils/utils.dart';
 import 'package:loymark_test/domain/entities/user.dart';
+import 'package:loymark_test/presentation/pages/users/upsert_user_screen.dart';
 import 'package:loymark_test/presentation/pages/users/user_history_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/user_screen.dart';
 import 'package:loymark_test/presentation/pages/users/users_cubit.dart';
@@ -115,7 +116,9 @@ class _UsersScreenState extends State<UsersScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () async {},
+          onPressed: () async {
+            Utils.navigateTo(context, UpsertUserScreen());
+          },
           child: const Icon(Icons.add),
         ),
         body: BlocBuilder<UsersCubit, UsersState>(
