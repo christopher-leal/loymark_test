@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loymark_test/core/utils/utils.dart';
 import 'package:loymark_test/domain/entities/user.dart';
+import 'package:loymark_test/presentation/pages/activities/activities_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/upsert_user_screen.dart';
 import 'package:loymark_test/presentation/pages/users/user_history_cubit.dart';
 import 'package:loymark_test/presentation/pages/users/user_screen.dart';
@@ -72,8 +73,9 @@ class _UsersScreenState extends State<UsersScreen> {
           ),
         ),
       ),
-      onDismissed: (direction) {
-        context.read<UsersCubit>().deleteUser(user.id);
+      onDismissed: (direction) async {
+        await context.read<UsersCubit>().deleteUser(user.id);
+        context.read<ActivitiesCubit>().getActivities(refreshList: true);
       },
       confirmDismiss: (DismissDirection direction) async {
         return await _dismissConfirm(context);
