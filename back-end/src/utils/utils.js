@@ -53,7 +53,7 @@ const removeNulls = (json) => {
     const keys = Object.keys(json)
     let nullValues = []
     for (let i = 0; i < keys.length; i++)
-        if (!json[keys[i]] && typeof json[keys[i]] !== 'boolean')
+        if (!json[keys[i]] && typeof json[keys[i]] !== 'boolean' && json[keys[i]] !== '')
             nullValues.push(keys[i])
     for (let i = 0; i < nullValues.length; i++)
         delete json[nullValues[i]]
